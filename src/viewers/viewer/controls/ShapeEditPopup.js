@@ -33,22 +33,43 @@ import Ui from '../../../utils/ui';
  * @extends {ol.interaction.Interaction}
  */
 class ShapeEditPopup extends Overlay {
-
     /**
      * @constructor
      * 
      * @param {source.Regions} regions_reference a reference to Regions
      */
     constructor(regions_reference) {
-
         var els = document.querySelectorAll('.shape-edit-popup');
         let popup = document.createElement('div');
         popup.className = 'shape-edit-popup';
         popup.innerHTML = `
         <div>
-            <input class='shape-popup-edit-text'
-                placeholder='Edit shape comment'
-                value=''/>
+            <div> Class:
+                <select id="roiClass">
+                    <option value="OTHER" selected>OTHER</option>
+                    <option value="ASC-US">ASC-US</option>
+                    <option value="ASC-H">ASC-H</option>
+                    <option value="LSIL">LSIL</option>
+                    <option value="HSIL">HSIL</option>
+                    <option value="SCC">SCC</option>
+                    <option value="TR">TR</option>
+                    <option value="M">M</option>
+                    <option value="AM">AM</option>
+                    <option value="BV">BV</option>
+                    <option value="CMV">CMV</option>
+                    <option value="HSV">HSV</option>
+                    <option value="IM">IM</option>
+                    <option value="S">S</option>
+                    <option value="AGC(NSL)-CC">AGC(NSL)-CC</option>
+                    <option value="AGC(NSL)-E">AGC(NSL)-E</option>
+                    <option value="AGC(NSL)-US">AGC(NSL)-US</option>
+                    <option value="AGC(FN)-CC">AGC(FN)-CC</option>
+                    <option value="AGC(FN)-US">AGC(FN)-US</option>
+                    <option value="AIS-CC">AIS-CC</option>
+                    <option value="AIS-E">AIS-E</option>
+                    <option value="AIS-OT">AIS-OT</option>
+                </select>
+            </div>
             <div><input readonly class='shape-popup-coords'/></div>
             <div><input readonly class='shape-popup-area'/></div>
             <a href="#" class="shape-edit-popup-closer" class="shape-edit-popup-closer"></a>
@@ -72,7 +93,8 @@ class ShapeEditPopup extends Overlay {
         // Need to add to map before we can bindListeners() to DOM elements
         this.map.addOverlay(this);
 
-        this.textInput = this.popup.querySelectorAll('.shape-popup-edit-text')[0];
+        // this.textInput = this.popup.querySelectorAll('.shape-popup-edit-text')[0];
+        this.roiClass = this.popup.querySelectorAll('#roiClass')[0];
         this.coordsInput = this.popup.querySelectorAll('.shape-popup-coords')[0];
         this.areaInput = this.popup.querySelectorAll('.shape-popup-area')[0];
         this.popupCloser = this.popup.querySelectorAll('.shape-edit-popup-closer')[0];
@@ -107,7 +129,8 @@ class ShapeEditPopup extends Overlay {
         // so we know which shape we're editing...
         this.shapeId = feature.getId();
 
-        this.textInput.value = text;
+        // this.textInput.value = text;
+        this.roiClass.value = text;
 
         // show if feature is visible
         if (this.regions.renderFeature(feature)) {
@@ -124,7 +147,8 @@ class ShapeEditPopup extends Overlay {
      */
     updatePopupText(shape_ids, text) {
         if (this.shapeId && shape_ids.indexOf(this.shapeId) > -1) {
-            this.textInput.value = text;
+            // this.textInput.value = text;
+            this.roiClass.value = text;
         }
     }
 
@@ -206,7 +230,28 @@ class ShapeEditPopup extends Overlay {
      */
     bindListeners() {
         let inputTimeout;
-        this.textInput.onkeyup = (event) => {
+        // this.textInput.onkeyup = (event) => {
+        //
+        //     // Use a de-bounce to automatically save when user stops typing
+        //     if (inputTimeout) {
+        //         clearTimeout(inputTimeout);
+        //         inputTimeout = undefined;
+        //     }
+        //     inputTimeout = setTimeout(() => {
+        //         let value = event.target.value;
+        //         // Handled by Right panel UI, regions-edit.js
+        //         sendEventNotification(
+        //             this.viewer_,
+        //             "IMAGE_COMMENT_CHANGE",
+        //             {
+        //                 shapeId: this.shapeId,
+        //                 Text: value,
+        //             }
+        //         );
+        //     }, 500);
+        // }
+
+        this.roiClass.onchange = (event) => {
 
             // Use a de-bounce to automatically save when user stops typing
             if (inputTimeout) {
@@ -247,8 +292,9 @@ class ShapeEditPopup extends Overlay {
      * Removes listeners added above
      */
     unbindListeners() {
-        this.textInput.onkeyup = null;
+        // this.textInput.onkeyup = null;
         this.popupCloser.onclick = null;
+        this.roiClass.onchange=null;
     }
 
     /**

@@ -188,7 +188,8 @@ export default class RegionsEdit extends EventSubscriber {
         strokeWidthSpinner.spinner({min: 0, disabled: false});
         strokeWidthSpinner.spinner("value", 1);
 
-        let editComment = $(this.element).find(".shape-edit-comment input");
+        // let editComment = $(this.element).find(".shape-edit-comment input");
+        let editComment = $(this.element).find("#roiClass");
         editComment.prop("disabled", true);
         let fontSizeSpinner =
             $(this.element).find(".shape-font-size input");
@@ -514,17 +515,34 @@ export default class RegionsEdit extends EventSubscriber {
      * @memberof RegionsEdit
      */
     adjustCommentEdit(canDo=false, showDisabled=true) {
-        let editComment = $(this.element).find(".shape-edit-comment input");
+        // let editComment = $(this.element).find(".shape-edit-comment input");
+        let editComment = $(this.element).find("#roiClass");
+        // editComment.off();
+        // editComment.val('Comment');
+        // editComment.attr('title',"");
+        // if (this.last_selected) {
+        //     editComment.val(
+        //         typeof this.last_selected.Text === 'string' ?
+        //             this.last_selected.Text : '');
+        //     editComment.on('change keyup',
+        //         (event) => {
+        //             if (event.type === 'keyup' && event.keyCode !== 13) return;
+        //             this.onCommentChange(
+        //                 event.target.value, this.last_selected)
+        //         });
+        //     editComment.prop("disabled", showDisabled);
+        //     if (showDisabled)
+        //         editComment.attr('title', PERMISSION_TOOLTIPS.CANNOT_EDIT);
+        // } else editComment.prop("disabled", true);
         editComment.off();
-        editComment.val('Comment');
+        editComment.val('OTHER');
         editComment.attr('title',"");
         if (this.last_selected) {
             editComment.val(
                 typeof this.last_selected.Text === 'string' ?
                     this.last_selected.Text : '');
-            editComment.on('change keyup',
+            editComment.on('change',
                 (event) => {
-                    if (event.type === 'keyup' && event.keyCode !== 13) return;
                     this.onCommentChange(
                         event.target.value, this.last_selected)
                 });

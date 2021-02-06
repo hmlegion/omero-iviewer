@@ -68,6 +68,7 @@ export default class Regions {
      */
     constructor(context) {
         this.context = context;
+        this.image_config = this.context.getSelectedImageConfig();
     }
 
     /**

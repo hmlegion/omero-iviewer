@@ -56,7 +56,7 @@
                         <span class="show_comments">
                             ${active_column === 'comments' ? '&#10003;' : '&nbsp;'}
                         </span>
-                        <a href="#">Show Comments</a>
+                        <a href="#">Show Classes</a>
                     </li>
                     <li click.delegate="showColumn('measurements')">
                         <span class="show_measurements">
@@ -79,14 +79,14 @@
                         show.bind="regions_info.number_of_shapes > 0">Show</label>
             </div>
             <div class="regions-table-col shape-type">&nbsp;</div>
-            <div class="regions-table-col shape-z ${sortCss(sortBy, sortAscending, 'theZ')}"
-                click.delegate="sort('theZ')">Z</div>
-            <div class="regions-table-col shape-t ${sortCss(sortBy, sortAscending, 'theT')}"
-                click.delegate="sort('theT')">T</div>
-            <div class="regions-table-col shape-c">C</div>
+<!--            <div class="regions-table-col shape-z ${sortCss(sortBy, sortAscending, 'theZ')}"-->
+<!--                click.delegate="sort('theZ')">Z</div>-->
+<!--            <div class="regions-table-col shape-t ${sortCss(sortBy, sortAscending, 'theT')}"-->
+<!--                click.delegate="sort('theT')">T</div>-->
+<!--            <div class="regions-table-col shape-c">C</div>-->
             <div class="regions-table-col shape-comment ${sortCss(sortBy, sortAscending, 'shapeText')}"
                     click.delegate="sort('shapeText')"
-                    show.bind="active_column === 'comments'">Comment
+                    show.bind="active_column === 'comments'">Class
                 </div>
             <div class="regions-table-col shape-area ${sortCss(sortBy, sortAscending, 'area')}"
                     click.delegate="sort('area')"
@@ -130,9 +130,9 @@
                          <div class="regions-table-col shape-type">
                              (${(roi.shapes.size - roi.deleted)})
                          </div>
-                        <div class="regions-table-col shape-z"></div>
-                        <div class="regions-table-col shape-t"></div>
-                        <div class="regions-table-col shape-c"></div>
+<!--                        <div class="regions-table-col shape-z"></div>-->
+<!--                        <div class="regions-table-col shape-t"></div>-->
+<!--                        <div class="regions-table-col shape-c"></div>-->
                         <div class="regions-table-col shape-comment">
                             ${roi.name}
                         </div>
@@ -161,15 +161,15 @@
                         <div class="regions-table-col shape-type ${shape.type.toLowerCase()}-icon
                             marker-${shape.MarkerStart.toLowerCase()}${shape.MarkerEnd.toLowerCase()}">
                         </div>
-                        <div class="regions-table-col shape-z">
-                            ${shape.TheZ !== -1 ? (shape.TheZ + 1) : ""}
-                        </div>
-                        <div class="regions-table-col shape-t">
-                            ${shape.TheT !== -1 ? (shape.TheT + 1) : ""}
-                        </div>
-                        <div class="regions-table-col shape-c">
-                            ${shape.TheC !== -1 ? (shape.TheC + 1) : ""}
-                        </div>
+<!--                        <div class="regions-table-col shape-z">-->
+<!--                            ${shape.TheZ !== -1 ? (shape.TheZ + 1) : ""}-->
+<!--                        </div>-->
+<!--                        <div class="regions-table-col shape-t">-->
+<!--                            ${shape.TheT !== -1 ? (shape.TheT + 1) : ""}-->
+<!--                        </div>-->
+<!--                        <div class="regions-table-col shape-c">-->
+<!--                            ${shape.TheC !== -1 ? (shape.TheC + 1) : ""}-->
+<!--                        </div>-->
                         <div class="regions-table-col shape-comment"
                              show.bind="active_column === 'comments'">
                                 ${shape.Text ? shape.Text : ''}

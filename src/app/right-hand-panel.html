@@ -21,20 +21,22 @@
     <require from="../regions/regions"></require>
     <require from="../info/info"></require>
 
-    <ul id="panel-tabs" class="nav nav-tabs" role="tablist">
-        <li class="${context.selected_tab === TABS.INFO ? 'active' : ''}">
-            <a href="${'#' + TABS.INFO}" role="tab">Info</a>
-        </li>
-        <li class="${context.selected_tab === TABS.SETTINGS ? 'active' : ''}">
-            <a href="${'#' + TABS.SETTINGS}" role="tab">Settings</a>
-        </li>
-        <li class="${context.selected_tab === TABS.ROIS ? 'active' : ''}">
-            <a href="${'#' + TABS.ROIS}" role="tab">
-                ROIs ${image_config && image_config.image_info ?
-                        '[' + image_config.image_info.roi_count + ']' : ''}
-            </a>
-        </li>
-    </ul>
+    <div>Step 1</div>
+    <div>自由标记</div>
+<!--    <ul id="panel-tabs" class="nav nav-tabs" role="tablist">-->
+<!--        <li class="${context.selected_tab === TABS.INFO ? 'active' : ''}">-->
+<!--            <a href="${'#' + TABS.INFO}" role="tab">Info</a>-->
+<!--        </li>-->
+<!--        <li class="${context.selected_tab === TABS.SETTINGS ? 'active' : ''}">-->
+<!--            <a href="${'#' + TABS.SETTINGS}" role="tab">Settings</a>-->
+<!--        </li>-->
+<!--        <li class="${context.selected_tab === TABS.ROIS ? 'active' : ''}">-->
+<!--            <a href="${'#' + TABS.ROIS}" role="tab">-->
+<!--                ROIs ${image_config && image_config.image_info ?-->
+<!--                        '[' + image_config.image_info.roi_count + ']' : ''}-->
+<!--            </a>-->
+<!--        </li>-->
+<!--    </ul>-->
 
     <div class="disabled-color loading-text"
          show.bind="image_config === null ||

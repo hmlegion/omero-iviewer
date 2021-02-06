@@ -55,7 +55,7 @@
                         <input style="width: auto;" type="checkbox"
                                checked.one-way="regions_info.show_comments"
                                change.delegate="showComments($event)">
-                        Show Comments
+                        Show Classes
                     </label>
                 </div>
 
@@ -91,11 +91,12 @@
         </div>
         <ul id="regions-tabs" class="nav nav-tabs small-tabs" role="tablist">
             <li class="${selected_roi_tab === ROI_TABS.ROI_TABLE ? 'active' : ''}">
-                <a href="#${ ROI_TABS.ROI_TABLE }" role="tab">ROIs</a>
+                <a href="#${ ROI_TABS.ROI_TABLE }" role="tab">ROIs ${image_config && image_config.image_info ?
+                    '[' + image_config.image_info.roi_count + ']' : ''}</a>
             </li>
-            <li class="${selected_roi_tab === ROI_TABS.ROI_PLANE_GRID ? 'active' : ''}">
-                <a href="#${ ROI_TABS.ROI_PLANE_GRID }" role="tab">Planes</a>
-            </li>
+<!--            <li class="${selected_roi_tab === ROI_TABS.ROI_PLANE_GRID ? 'active' : ''}">-->
+<!--                <a href="#${ ROI_TABS.ROI_PLANE_GRID }" role="tab">Planes</a>-->
+<!--            </li>-->
         </ul>
         <div id="regions-tabs-content" class="tab-content">
             <div id="roi-table"

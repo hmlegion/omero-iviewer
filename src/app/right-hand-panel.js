@@ -104,19 +104,19 @@ export class RightHandPanel {
      * @memberof RightHandPanel
      */
     attached() {
-        $("#panel-tabs").find("a").click((e) => {
-            e.preventDefault();
-            this.context.selected_tab = e.currentTarget.hash.substring(1);
-            this.makeInitialRoisRequestIfRoisTabIsActive();
-            $(e.currentTarget).tab('show');
-        });
+        // $("#panel-tabs").find("a").click((e) => {
+        //     e.preventDefault();
+        //     this.context.selected_tab = e.currentTarget.hash.substring(1);
+        //     this.makeInitialRoisRequestIfRoisTabIsActive();
+        //     $(e.currentTarget).tab('show');
+        // });
 
-        // If ROI ID is set, show ROIs tab:
-        if (this.image_config && this.image_config.image_info &&
-                (this.image_config.image_info.initial_roi_id || this.image_config.image_info.initial_shape_id)) {
-            // This will trigger image_info to load ROIs once image data is loaded
+        // // If ROI ID is set, show ROIs tab:
+        // if (this.image_config && this.image_config.image_info &&
+        //         (this.image_config.image_info.initial_roi_id || this.image_config.image_info.initial_shape_id)) {
+        //     // This will trigger image_info to load ROIs once image data is loaded
             this.context.selected_tab = TABS.ROIS;
-        }
+        // }
     }
 
     /**
