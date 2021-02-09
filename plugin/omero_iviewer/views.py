@@ -469,6 +469,11 @@ def image_data(request, image_id, conn=None, **kwargs):
     try:
         rv = imageMarshal(image)
 
+        rv['meta']['imageDescription'] = 'test'
+
+        rv['isAdmin']=conn.isAdmin()
+        rv['curUserId']=conn.getUserId()
+
         # set roi count
         rv['roi_count'] = image.getROICount()
 
@@ -529,6 +534,8 @@ def image_data(request, image_id, conn=None, **kwargs):
         families = image.getFamilies().values()
         for fam in families:
             rv['families'].append(fam.getValue())
+
+        # rv['perms']['canAnnotate']= True
 
         return JsonResponse(rv)
     except Exception as image_data_retrieval_exception:

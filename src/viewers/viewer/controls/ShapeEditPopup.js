@@ -72,7 +72,9 @@ class ShapeEditPopup extends Overlay {
             </div>
             <div><input readonly class='shape-popup-coords'/></div>
             <div><input readonly class='shape-popup-area'/></div>
-            <a href="#" class="shape-edit-popup-closer" class="shape-edit-popup-closer"></a>
+            <div><input readonly class='shape-popup-owner'/></div>
+<!--            enable/disable roi,不需要注释掉-->
+<!--            <a href="#" class="shape-edit-popup-closer" class="shape-edit-popup-closer"></a>-->
         </div>`;
         // add flag to the event so that the Hover interaction can ignore it
         popup.onpointermove = function(e) {
@@ -97,7 +99,8 @@ class ShapeEditPopup extends Overlay {
         this.roiClass = this.popup.querySelectorAll('#roiClass')[0];
         this.coordsInput = this.popup.querySelectorAll('.shape-popup-coords')[0];
         this.areaInput = this.popup.querySelectorAll('.shape-popup-area')[0];
-        this.popupCloser = this.popup.querySelectorAll('.shape-edit-popup-closer')[0];
+        // this.popupCloser = this.popup.querySelectorAll('.shape-edit-popup-closer')[0];
+        this.popupOwner = this.popup.querySelectorAll('.shape-popup-owner')[0];
         this.bindListeners();
     };
 
@@ -131,6 +134,8 @@ class ShapeEditPopup extends Overlay {
 
         // this.textInput.value = text;
         this.roiClass.value = text;
+        // console.log('feature',feature)
+        this.popupOwner.value='owner:' +feature['owner'];
 
         // show if feature is visible
         if (this.regions.renderFeature(feature)) {
@@ -197,7 +202,7 @@ class ShapeEditPopup extends Overlay {
                 x = coords[2];
             } else if (coords[1] > coords[3]) {
                 x = coords[0]
-            };
+            }
         }
 
         let coordsText = '';
@@ -272,20 +277,20 @@ class ShapeEditPopup extends Overlay {
             }, 500);
         }
 
-        this.popupCloser.onclick = (event) => {
-            this.setPosition(undefined);
-            event.target.blur();
-
-            Ui.showModalMessage(`<p>ROI popups disabled.</p>
-            <p>To re-enable popups, right-click on the image and use the context menu.</p>`, "OK");
-
-            sendEventNotification(
-                this.viewer_,
-                "ENABLE_SHAPE_POPUP",
-                {enable: false}
-            );
-            return false;
-        };
+        // this.popupCloser.onclick = (event) => {
+        //     this.setPosition(undefined);
+        //     event.target.blur();
+        //
+        //     Ui.showModalMessage(`<p>ROI popups disabled.</p>
+        //     <p>To re-enable popups, right-click on the image and use the context menu.</p>`, "OK");
+        //
+        //     sendEventNotification(
+        //         this.viewer_,
+        //         "ENABLE_SHAPE_POPUP",
+        //         {enable: false}
+        //     );
+        //     return false;
+        // };
     }
 
     /**
@@ -293,7 +298,7 @@ class ShapeEditPopup extends Overlay {
      */
     unbindListeners() {
         // this.textInput.onkeyup = null;
-        this.popupCloser.onclick = null;
+        // this.popupCloser.onclick = null;
         this.roiClass.onchange=null;
     }
 

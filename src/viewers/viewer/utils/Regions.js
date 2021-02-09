@@ -494,6 +494,9 @@ export const createFeaturesFromRegionsResponse =
                         //不可以删除别人创建的 shape
                         actualFeature['permissions']['canDelete']=false
                     }
+                    //在这里设置 owner，在 shapeEditPopup中使用
+                    let owner=shape['omero:details']['owner'];
+                    actualFeature['owner']=owner['FirstName']+' '+owner['LastName'];
 
                     // calculate area/length
                     regions.getLengthAndAreaForShape(actualFeature, true);
