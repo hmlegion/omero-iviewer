@@ -204,6 +204,9 @@ class Regions extends Vector {
          */
         this.hoverId = null;
 
+        this.isAdmin=false;
+        this.curUserId=0;
+
         /**
          * The initialization function performs the following steps:
          * 1. Make an ajax request for the regions data as json and store it internally
@@ -218,10 +221,19 @@ class Regions extends Vector {
          * @private
          */
         this.initialize_ = function(scope, data) {
-
             // initialize features helper function
             var init0 = function(data) {
                 // store response internally to be able to work with it later
+                // console.log('roi data:');
+                // console.log(data);
+                // console.log('this.viewer_',scope.viewer_);
+                // console.log('this.image_info_',scope.viewer_['image_info_']);
+                // console.log('this.isAdmin',scope.viewer_['image_info_']['isAdmin']);
+
+                scope.isAdmin=  scope.viewer_['image_info_']['isAdmin'];
+                scope.curUserId=  scope.viewer_['image_info_']['curUserId'];
+                // console.log('scope',scope);
+
                 scope.regions_info_ = data;
                 scope.new_unsaved_shapes_ = {}; // reset
                 var regionsAsFeatures = createFeaturesFromRegionsResponse(scope);
