@@ -526,13 +526,12 @@ export default class RegionsInfo  {
 
         try {
             let count = 0;
+            let newData=[];
             for (let r in data) {
                 let shapes = new Map();
                 let roi = data[r];
                 let name = data[r]['Name'] || '';
-                // console.log('roi',roi);
                 if (this.isAdmin){
-
                 }else{
                     //如果不是 admin ，只显示自己名下的 roi
                     let ownerId=roi['omero:details']['owner']["@id"]
@@ -548,6 +547,7 @@ export default class RegionsInfo  {
 
                 // add shapes
                 if (Misc.isArray(roi.shapes) && roi.shapes.length > 0) {
+                    newData.push(roi);
                     let roiId = roi['@id'];
                     roi.shapes.sort(function(s1, s2) {
                         var z1 = parseInt(s1['TheZ']);
@@ -583,10 +583,11 @@ export default class RegionsInfo  {
                 }
             }
             this.number_of_shapes = count;
-            this.tmp_data = data;
+            this.tmp_data = newData;//用于 ol3_viewer.js ->initRegions() 中画图
         } catch(err) {
             console.error("Failed to sync Rois: " + err);
         }
+
         this.ready = true;
     }
 
