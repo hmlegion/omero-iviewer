@@ -52,11 +52,11 @@
                     data-toggle="dropdown">
                 </button>
                 <ul class="dropdown-menu">
-                    <li click.delegate="showColumn('comments')">
+                    <li click.delegate="showColumn('owner')">
                         <span class="show_comments">
-                            ${active_column === 'comments' ? '&#10003;' : '&nbsp;'}
+                            ${active_column === 'owner' ? '&#10003;' : '&nbsp;'}
                         </span>
-                        <a href="#">Show Classes</a>
+                        <a href="#">Show Owner</a>
                     </li>
                     <li click.delegate="showColumn('measurements')">
                         <span class="show_measurements">
@@ -85,8 +85,10 @@
 <!--                click.delegate="sort('theT')">T</div>-->
 <!--            <div class="regions-table-col shape-c">C</div>-->
             <div class="regions-table-col shape-comment ${sortCss(sortBy, sortAscending, 'shapeText')}"
-                    click.delegate="sort('shapeText')"
-                    show.bind="active_column === 'comments'">Class
+                    click.delegate="sort('shapeText')">Class
+                </div>
+            <div class="regions-table-col shape-comment ${sortCss(sortBy, sortAscending, 'shapeText')}"
+                    click.delegate="sort('owner')" show.bind="active_column === 'owner'">Owner
                 </div>
             <div class="regions-table-col shape-area ${sortCss(sortBy, sortAscending, 'area')}"
                     click.delegate="sort('area')"
@@ -94,12 +96,13 @@
                     Area (${regions_info.image_info.image_pixels_size.symbol_x ||
                             'px'}&#178;)
                 </div>
-            <div class="regions-table-col shape-length ${sortCss(sortBy, sortAscending, 'length')}"
-                    click.delegate="sort('length')"
-                    show.bind="active_column === 'measurements'">
-                    Length (${regions_info.image_info.image_pixels_size.symbol_x ||
-                            'px'})
-                </div>
+<!--            长度，不需要注释掉-->
+<!--            <div class="regions-table-col shape-length ${sortCss(sortBy, sortAscending, 'length')}"-->
+<!--                    click.delegate="sort('length')"-->
+<!--                    show.bind="active_column === 'measurements'">-->
+<!--                    Length (${regions_info.image_info.image_pixels_size.symbol_x ||-->
+<!--                            'px'})-->
+<!--                </div>-->
         </div>
 
         <div class="disabled-color loading-text"
@@ -170,20 +173,23 @@
 <!--                        <div class="regions-table-col shape-c">-->
 <!--                            ${shape.TheC !== -1 ? (shape.TheC + 1) : ""}-->
 <!--                        </div>-->
-                        <div class="regions-table-col shape-comment"
-                             show.bind="active_column === 'comments'">
+                        <div class="regions-table-col shape-comment">
                                 ${shape.Text ? shape.Text : ''}
+                        </div>
+                        <div class="regions-table-col shape-comment" show.bind="active_column === 'owner'">
+                            ${shape.owner ? shape.owner : ''}
                         </div>
                         <div class="regions-table-col shape-area"
                              show.bind="active_column === 'measurements'"
                              title="${shape.Area && shape.Area > 0 ? shape.Area : ''}">
                                 ${shape.Area && shape.Area > 0 ? shape.Area : ''}
                         </div>
-                        <div class="regions-table-col shape-length"
-                             show.bind="active_column === 'measurements'"
-                             title="${shape.Length && shape.Length > 0 ? shape.Length : ''}">
-                                ${shape.Length && shape.Length > 0 ? shape.Length : ''}
-                        </div>
+<!--                        长度，不需要注释掉-->
+<!--                        <div class="regions-table-col shape-length"-->
+<!--                             show.bind="active_column === 'measurements'"-->
+<!--                             title="${shape.Length && shape.Length > 0 ? shape.Length : ''}">-->
+<!--                                ${shape.Length && shape.Length > 0 ? shape.Length : ''}-->
+<!--                        </div>-->
                     </div>
                 </template>
             </template>

@@ -464,6 +464,8 @@ export default class RegionsInfo  {
                     this.try_request_again = false;
                     this.requestData();
                 } else if (this.is_pending) {
+                    //获取到 region 数据
+                    // console.info('regions_info.js->requestData()',response.data);
                     this.setData(response.data);
                     this.roi_count_on_current_plane = response.meta.totalCount;
                 }
@@ -487,12 +489,34 @@ export default class RegionsInfo  {
         // reset regions info data and history
         this.resetRegionsInfo();
 
+        // console.info('regions_info.js->setData(),this.image_info',this.image_info);
+        // console.info('regions_info.js->Window.image_info_',Window.image_info_);
+
+        let isAdmin= Window.image_info_['isAdmin'];
+        let curUserId= Window.image_info_['curUserId'];
+
         try {
             let count = 0;
             for (let r in data) {
                 let shapes = new Map();
                 let roi = data[r];
                 let name = data[r]['Name'] || '';
+                // console.log('roi',roi);
+                if (isAdmin){
+
+                }else{
+                    //如果不是 admin ，只显示自己名下的 roi
+                    let ownerId=roi['omero:details']['owner']["@id"]
+                    if (curUserId!=ownerId) continue;
+                }
+                //经测试在这里改了无效，在 utils/Regions.js 那里改
+                // let perms= roi['omero:details']['permissions']
+                // perms['canAnnotate']=false;
+                // perms['canDelete']=false;
+                // perms['canEdit']=false;
+                // perms['canLink']=false;
+                // console.log('roi after',roi);
+
                 // add shapes
                 if (Misc.isArray(roi.shapes) && roi.shapes.length > 0) {
                     let roiId = roi['@id'];

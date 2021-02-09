@@ -204,8 +204,8 @@ class Regions extends Vector {
          */
         this.hoverId = null;
 
-        this.isAdmin=false;
-        this.curUserId=0;
+        // this.isAdmin=false;
+        // this.curUserId=0;
 
         /**
          * The initialization function performs the following steps:
@@ -230,8 +230,8 @@ class Regions extends Vector {
                 // console.log('this.image_info_',scope.viewer_['image_info_']);
                 // console.log('this.isAdmin',scope.viewer_['image_info_']['isAdmin']);
 
-                scope.isAdmin=  scope.viewer_['image_info_']['isAdmin'];
-                scope.curUserId=  scope.viewer_['image_info_']['curUserId'];
+                // scope.isAdmin=  scope.viewer_['image_info_']['isAdmin'];
+                // scope.curUserId=  scope.viewer_['image_info_']['curUserId'];
                 // console.log('scope',scope);
 
                 scope.regions_info_ = data;

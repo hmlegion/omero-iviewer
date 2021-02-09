@@ -58,7 +58,7 @@ export default class RegionsList extends EventSubscriber {
      * @memberof RegionsList
      * @type {number}
      */
-     active_column = 'comments';
+     active_column = 'owner';
 
      /**
       * selected row (id) for multi-selection with shift

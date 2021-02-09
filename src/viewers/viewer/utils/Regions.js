@@ -406,11 +406,27 @@ export const createFeaturesFromRegionsResponse =
             // each 'level', roi or shape gets the state info property 'DEFAULT' assigned
             regions.regions_info_[roi]['state'] = REGIONS_STATE.DEFAULT;
 
+            // let isAdmin=regions.isAdmin;
+            let curUserId=regions.curUserId;
             // descend deeper into shapes for rois
             for (var s in regions.regions_info_[roi]['shapes']) {
                 var shape = regions.regions_info_[roi]['shapes'][s];
                 // id, TheT and TheZ have to be present
                 if (typeof(shape['@id']) !== 'number') continue;
+
+                // console.log('shape',shape);
+                // console.log('isAdmin',regions.isAdmin);
+                // console.log('curUserId',regions.curUserId);
+                // console.log('UserName',shape['omero:details']['owner']['UserName']);
+                let ownerId=shape['omero:details']['owner']['@id'];
+
+                // console.log('curUserId',curUserId);
+                // console.log('ownerId',ownerId);
+                // console.log('curUserId!==ownerId',curUserId!=ownerId);
+                // if (!isAdmin){
+                //     if (curUserId!==ownerId)
+                //         continue;
+                // }
 
                 var combinedId = '' + roiId + ":" + shape['@id'];
                 var shapeType = shape['@type'];
@@ -469,6 +485,16 @@ export const createFeaturesFromRegionsResponse =
                     }
                     actualFeature['permissions'] =
                         shape['omero:details']['permissions'];
+
+                    // console.log('actualFeature[\'permissions\']');
+                    // console.log(actualFeature['permissions']);
+                    // actualFeature['permissions']['canEdit']=false
+                    // actualFeature['permissions']['canAnnotate']=false
+                    if (curUserId!==ownerId){
+                        //不可以删除别人创建的 shape
+                        actualFeature['permissions']['canDelete']=false
+                    }
+
                     // calculate area/length
                     regions.getLengthAndAreaForShape(actualFeature, true);
                     // add us to the return array

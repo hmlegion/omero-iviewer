@@ -199,6 +199,9 @@ class Viewer extends OlObject {
          * @private
          */
         this.image_info_ = typeof opts['data'] === 'object' ? opts['data'] : null;
+        //TIP 这里将前后台数据关联
+        // console.log('Viewer 1--------',this.image_info_)
+        Window.image_info_=this.image_info_;
 
         /**
          * the associated OmeroRegions object
