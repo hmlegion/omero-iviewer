@@ -59,25 +59,27 @@
                     </label>
                 </div>
 
-                <button type="button"
-                    show.bind="regions_info.ready"
-                    disabled.bind="!(regions_info.selected_shapes &&
-                        regions_info.selected_shapes.length === 1)"
-                    class="btn btn-link btn-sm"
-                    style="margin-left: 5px; outline: none;"
-                    title="Link to selected ROI${ regions_info.selected_shapes.length === 1 ? '' : ' (need to select 1)'}"
-                    click.delegate="toggleShowRoiLink()">
-                    <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
-                </button>
+<!--                Show Classes 右边的 Link to selected ROI 按钮，用不着，注释掉-->
+<!--                <button type="button"-->
+<!--                    show.bind="regions_info.ready"-->
+<!--                    disabled.bind="!(regions_info.selected_shapes &&-->
+<!--                        regions_info.selected_shapes.length === 1)"-->
+<!--                    class="btn btn-link btn-sm"-->
+<!--                    style="margin-left: 5px; outline: none;"-->
+<!--                    title="Link to selected ROI${ regions_info.selected_shapes.length === 1 ? '' : ' (need to select 1)'}"-->
+<!--                    click.delegate="toggleShowRoiLink()">-->
+<!--                    <span class="glyphicon glyphicon-link" aria-hidden="true"></span>-->
+<!--                </button>-->
             </div>
 
-            <div show.bind="show_roi_link"
-                mouseout.delegate="toggleShowRoiLink()"
-                style="position: absolute; border: solid #ddd 1px; border-radius: 3px; padding: 5px; top: 35px;
-                    right: 5px; z-index: 10; background: #f8f8f8; width: 300px; box-shadow: 2px 2px 5px #ccc;">
-                <!-- NB: we pass shapes.length to function to ensure update https://discourse.aurelia.io/t/array-map-and-join-in-template/3550/4 -->
-                <input id="roi_link_input" style="width:100%" value="${ getRoisLink(regions_info.selected_shapes, regions_info.selected_shapes.length) }"/>
-            </div>
+<!--            点了Link to selected ROI 按钮后弹出的link,用不着，注释掉-->
+<!--            <div show.bind="show_roi_link"-->
+<!--                mouseout.delegate="toggleShowRoiLink()"-->
+<!--                style="position: absolute; border: solid #ddd 1px; border-radius: 3px; padding: 5px; top: 35px;-->
+<!--                    right: 5px; z-index: 10; background: #f8f8f8; width: 300px; box-shadow: 2px 2px 5px #ccc;">-->
+<!--                &lt;!&ndash; NB: we pass shapes.length to function to ensure update https://discourse.aurelia.io/t/array-map-and-join-in-template/3550/4 &ndash;&gt;-->
+<!--                <input id="roi_link_input" style="width:100%" value="${ getRoisLink(regions_info.selected_shapes, regions_info.selected_shapes.length) }"/>-->
+<!--            </div>-->
 
             <regions-edit regions_info.bind="regions_info"></regions-edit>
 
