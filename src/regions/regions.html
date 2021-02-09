@@ -23,7 +23,11 @@
 
     <div class="regions-container">
         <div class="regions-tools">
-            <div class="shapes-persistence">
+            <div class="shapes-persistence"
+                 show.bind="
+                        image_config.regions_info.isAdmin
+                        || (!image_config.regions_info.isAdmin && image_config.regions_info.curStep==1)
+                    ">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default btn-sm"
                         disabled.bind="!(regions_info.history &&
@@ -90,12 +94,18 @@
 <!--                <input id="roi_link_input" style="width:100%" value="${ getRoisLink(regions_info.selected_shapes, regions_info.selected_shapes.length) }"/>-->
 <!--            </div>-->
 
-            <regions-edit regions_info.bind="regions_info"></regions-edit>
+            <regions-edit regions_info.bind="regions_info"
+                  show.bind="
+                        image_config.regions_info.isAdmin
+                        || (!image_config.regions_info.isAdmin && image_config.regions_info.curStep==1)
+                    "></regions-edit>
 
-            <hr show.bind="regions_info !== null &&
-                           regions_info.image_info.can_annotate" />
-            <regions-drawing show.bind="regions_info !== null &&
-                                        regions_info.image_info.can_annotate"
+            <hr show.bind="(regions_info !== null && regions_info.image_info.can_annotate)
+                && (image_config.regions_info.isAdmin
+                        || (!image_config.regions_info.isAdmin && image_config.regions_info.curStep==1))" />
+            <regions-drawing show.bind="(regions_info !== null && regions_info.image_info.can_annotate)
+                    && (image_config.regions_info.isAdmin
+                                || (!image_config.regions_info.isAdmin && image_config.regions_info.curStep==1))"
                              regions_info.bind="regions_info">
             </regions-drawing>
             <hr />

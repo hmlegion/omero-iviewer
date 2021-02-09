@@ -395,6 +395,18 @@ export const createFeaturesFromRegionsResponse =
         if (!(regions instanceof Regions) ||
             !isArray(regions.regions_info_)) return null;
 
+        let imageInfo=regions['viewerReference']['image_info_'];
+        let curUserId=imageInfo['curUserId'];
+        let isAdmin=imageInfo['isAdmin'];
+        let step=imageInfo['curStep'];
+        let perms=imageInfo['perms'];
+
+        if (!isAdmin && step>1){
+            perms['canDelete']=false;
+            perms['canEdit']=false;
+            perms['canAnnotate']=false;
+        }
+
         var ret = [];
         for (var roi in regions.regions_info_) {
             // we gotta have an id and shapes, otherwise no features...
@@ -406,8 +418,6 @@ export const createFeaturesFromRegionsResponse =
             // each 'level', roi or shape gets the state info property 'DEFAULT' assigned
             regions.regions_info_[roi]['state'] = REGIONS_STATE.DEFAULT;
 
-            // let isAdmin=regions.isAdmin;
-            let curUserId=regions.curUserId;
             // descend deeper into shapes for rois
             for (var s in regions.regions_info_[roi]['shapes']) {
                 var shape = regions.regions_info_[roi]['shapes'][s];
@@ -486,14 +496,16 @@ export const createFeaturesFromRegionsResponse =
                     actualFeature['permissions'] =
                         shape['omero:details']['permissions'];
 
-                    // console.log('actualFeature[\'permissions\']');
-                    // console.log(actualFeature['permissions']);
-                    // actualFeature['permissions']['canEdit']=false
-                    // actualFeature['permissions']['canAnnotate']=false
                     if (curUserId!==ownerId){
                         //不可以删除别人创建的 shape
                         actualFeature['permissions']['canDelete']=false
                     }
+                    if (!isAdmin && step>1){
+                        actualFeature['permissions']['canDelete']=false;
+                        actualFeature['permissions']['canEdit']=false;
+                        actualFeature['permissions']['canAnnotate']=false;
+                    }
+
                     //在这里设置 owner，在 shapeEditPopup中使用
                     let owner=shape['omero:details']['owner'];
                     actualFeature['owner']=owner['FirstName']+' '+owner['LastName'];

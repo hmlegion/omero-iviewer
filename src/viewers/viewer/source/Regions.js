@@ -204,9 +204,6 @@ class Regions extends Vector {
          */
         this.hoverId = null;
 
-        // this.isAdmin=false;
-        // this.curUserId=0;
-
         /**
          * The initialization function performs the following steps:
          * 1. Make an ajax request for the regions data as json and store it internally
@@ -232,7 +229,7 @@ class Regions extends Vector {
 
                 // scope.isAdmin=  scope.viewer_['image_info_']['isAdmin'];
                 // scope.curUserId=  scope.viewer_['image_info_']['curUserId'];
-                // console.log('scope',scope);
+                scope.viewerReference=viewerReference;
 
                 scope.regions_info_ = data;
                 scope.new_unsaved_shapes_ = {}; // reset
@@ -502,6 +499,7 @@ class Regions extends Vector {
         }
 
         // just take the roi info that we had already (and include orphaned additions)
+        console.log('scope --222---',viewerReference);
         var regionsAsFeatures = createFeaturesFromRegionsResponse(this, true);
         if (!isArray(regionsAsFeatures)) regionsAsFeatures = [];
         if (regionsAsFeatures.length > 0) this.addFeatures(regionsAsFeatures);
@@ -621,15 +619,6 @@ class Regions extends Vector {
                 var params = {
                     "omit_client_update" : false
                 };
-
-                if (this.regions_info_){
-                    // console.log('this.regions_info_>>',this.regions_info_)
-                    // console.info('regions_info.js->Window.image_info_',Window.image_info_);
-                    // this.regions_info_.curStep+=1;
-                    // this.regions_info_.increaseStep();
-                    // console.log('this.regions_info_>>',this.regions_info_)
-                    // console.log('this.regions_info_.curStep>>',this.regions_info_.curStep)
-                }
 
                 sendEventNotification(
                     capturedRegionsReference.viewer_, "GOTO_NEXT_STEP_FINISH", params);

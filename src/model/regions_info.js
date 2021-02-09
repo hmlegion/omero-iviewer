@@ -257,7 +257,6 @@ export default class RegionsInfo  {
                 this.stepPrompt='标注审核'
                 break;
         }
-        console.log('this.stepPrompt',this.stepPrompt)
     }
     /**
      * Sets a property for shape(s) according to the new value
