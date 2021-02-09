@@ -24,6 +24,8 @@ urlpatterns = [
     url(r'^$', views.index, name='omero_iviewer_index'),
     url(r'^persist_rois/?$', views.persist_rois,
         name='omero_iviewer_persist_rois'),
+    url(r'^goto_next_step/?$', views.goto_next_step,
+        name='omero_iviewer_goto_next_step'),
     url(r'^image_data/(?P<image_id>[0-9]+)/$', views.image_data,
         name='omero_iviewer_image_data'),
     # load image_data for image linked to an ROI or Shape

@@ -93,7 +93,6 @@ def index(request, iid=None, conn=None, **kwargs):
         {'params': params, 'iviewer_url_suffix': u"?_iviewer-%s" % __version__}
     )
 
-
 @login_required()
 def persist_rois(request, conn=None, **kwargs):
     if not request.method == 'POST':
@@ -457,6 +456,33 @@ def roi_image_data(request, obj_type, obj_id, conn=None, **kwargs):
         raise Http404(f'Could not find {obj_type}: {obj_id}')
     return image_data(request, image_id, conn=None, **kwargs)
 
+@login_required()
+def goto_next_step(request, conn=None, **kwargs):
+    if not request.method == 'POST':
+        return JsonResponse({"errors": ["Use HTTP POST to send data!"]})
+
+    try:
+        rois_dict = json.loads(request.body)
+    except Exception as e:
+        return JsonResponse({"errors": ["Failed to load json: " + repr(e)]})
+
+    # some preliminary checks are following...
+    image_id = rois_dict.get('imageId', None)
+    if image_id is None:
+        return JsonResponse({"errors": ["No image id provided!"]})
+    # get the associated image and an instance of the update service
+    image = conn.getObject("Image", image_id, opts=conn.SERVICE_OPTS)
+    if image is None:
+        return JsonResponse({"errors": ["Could not find associated image!"]})
+
+    desc = image.getDescription()
+    if len(desc) <= 0:
+        image.setDescription('1')
+    else:
+        image.setDescription(str(int(desc)+1))
+    image.save()
+
+    return JsonResponse({"id": image.getDescription()})
 
 @login_required()
 def image_data(request, image_id, conn=None, **kwargs):
@@ -467,12 +493,17 @@ def image_data(request, image_id, conn=None, **kwargs):
         return JsonResponse({"error": "Image not found"}, status=404)
 
     try:
-        rv = imageMarshal(image)
+        desc= image.getDescription()
+        if len(desc)<=0:
+            image.setDescription('1')
+            image.save()
+            desc='1'
 
-        rv['meta']['imageDescription'] = 'test'
+        rv = imageMarshal(image)
 
         rv['isAdmin']=conn.isAdmin()
         rv['curUserId']=conn.getUserId()
+        rv['curStep']= int(desc)
 
         # set roi count
         rv['roi_count'] = image.getROICount()
