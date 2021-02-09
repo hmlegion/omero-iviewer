@@ -62,6 +62,8 @@ export const REGIONS_GENERATE_SHAPES = "REGIONS_GENERATE_SHAPES";
 export const REGIONS_STORE_SHAPES = "REGIONS_STORE_SHAPES";
 /** after modified/new/deleted shapes were stored */
 export const REGIONS_STORED_SHAPES = "REGIONS_STORED_SHAPES";
+export const GOTO_NEXT_STEP = "GOTO_NEXT_STEP";
+export const GOTO_NEXT_STEP_FINISH = "GOTO_NEXT_STEP_FINISH";
 /** whenever the styling of shapes is to be changed */
 export const REGIONS_MODIFY_SHAPES = "REGIONS_MODIFY_SHAPES";
 /** Retrieves the viewer image settings */

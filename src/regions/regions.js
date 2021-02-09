@@ -21,7 +21,7 @@ import Context from '../app/context';
 import Misc from '../utils/misc';
 import Ui from '../utils/ui';
 import {TABS, ROI_TABS, IVIEWER} from '../utils/constants';
-import {REGIONS_STORE_SHAPES, REGIONS_SHOW_COMMENTS} from '../events/events';
+import {REGIONS_STORE_SHAPES, REGIONS_SHOW_COMMENTS,GOTO_NEXT_STEP} from '../events/events';
 import {inject, customElement, bindable} from 'aurelia-framework';
 
 /**
@@ -112,6 +112,18 @@ export default class Regions {
 
         this.context.publish(
             REGIONS_STORE_SHAPES,
+            {config_id : this.regions_info.image_info.config_id});
+    }
+
+    nextStep(){
+        if (Misc.useJsonp(this.context.server)) {
+            alert("Goto next step will not work cross-domain!");
+            return;
+        }
+        if (!this.regions_info.ready) return;
+
+        this.context.publish(
+            GOTO_NEXT_STEP,
             {config_id : this.regions_info.image_info.config_id});
     }
 

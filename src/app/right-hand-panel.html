@@ -21,8 +21,8 @@
     <require from="../regions/regions"></require>
     <require from="../info/info"></require>
 
-    <div>Step 1</div>
-    <div>自由标记</div>
+    <h4>Step <span>${image_config.regions_info.curStep>0?image_config.regions_info.curStep:-1}</span></h4>
+    <p class="text-info">${image_config.regions_info.stepPrompt}</p>
 <!--    <ul id="panel-tabs" class="nav nav-tabs" role="tablist">-->
 <!--        <li class="${context.selected_tab === TABS.INFO ? 'active' : ''}">-->
 <!--            <a href="${'#' + TABS.INFO}" role="tab">Info</a>-->

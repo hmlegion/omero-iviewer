@@ -595,6 +595,64 @@ class Regions extends Vector {
         return (visible && !deleted && belongsToDimension);
     }
 
+    gotoNextStep(omit_client_update) {
+        if (typeof omit_client_update !== 'boolean') omit_client_update = false;
+
+        try {
+            var postContent = {
+                "imageId": this.viewer_.id_
+            };
+
+            // set properties for ajax request
+            var properties = {
+                "server" : this.viewer_.getServer(),
+                "uri" : this.viewer_.getPrefixedURI(PLUGIN_PREFIX) +
+                    '/goto_next_step',
+                "method" : 'POST',
+                "content" : JSON.stringify(postContent),
+                "headers" : {"X-CSRFToken" : getCookie("csrftoken")},
+                "jsonp" : false
+            };
+
+            var capturedRegionsReference = this;
+
+            // the success handler for the POST
+            properties["success"] = function(data) {
+                var params = {
+                    "omit_client_update" : false
+                };
+
+                if (this.regions_info_){
+                    // console.log('this.regions_info_>>',this.regions_info_)
+                    // console.info('regions_info.js->Window.image_info_',Window.image_info_);
+                    // this.regions_info_.curStep+=1;
+                    // this.regions_info_.increaseStep();
+                    // console.log('this.regions_info_>>',this.regions_info_)
+                    // console.log('this.regions_info_.curStep>>',this.regions_info_.curStep)
+                }
+
+                sendEventNotification(
+                    capturedRegionsReference.viewer_, "GOTO_NEXT_STEP_FINISH", params);
+            };
+
+            // the error handler for the POST
+            properties["error"] = function(error) {
+                var params = {
+                    "errors" : [error]
+                };
+                sendEventNotification(
+                    capturedRegionsReference.viewer_, "GOTO_NEXT_STEP", params);
+            };
+
+            // send request
+            sendRequest(properties, this);
+        } catch(requestNotSent) {
+            console.error(requestNotSent);
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Persists modified/added shapes
      *

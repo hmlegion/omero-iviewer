@@ -1618,6 +1618,16 @@ class Viewer extends OlObject {
                 REGIONS_STATE.MODIFIED, callback);
     }
 
+    gotoNextStep(omit_client_update) {
+        if (!(this.regions_ instanceof Regions))
+            return false; // no regions, nothing to persist...
+
+        omit_client_update =
+            typeof omit_client_update === 'boolean' && omit_client_update;
+
+        return this.regions_.gotoNextStep(omit_client_update);
+    }
+
     /**
      * Persists modified/added/deleted shapes
      * see: {@link Regions.storeRegions}

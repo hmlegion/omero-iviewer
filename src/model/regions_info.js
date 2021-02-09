@@ -193,6 +193,11 @@ export default class RegionsInfo  {
      */
     roi_id = -1;
 
+    isAdmin= false;
+    curUserId= 0;
+    curStep=0;
+    stepPrompt="";
+
     /**
      * @constructor
      * @param {ImageInfo} image_info the associated image
@@ -242,6 +247,18 @@ export default class RegionsInfo  {
         }
     }
 
+    setStepPrompt(){
+        this.stepPrompt="暂未支持的步骤"
+        switch (this.curStep){
+            case 1:
+                this.stepPrompt='自由标注';
+                break
+            case 2:
+                this.stepPrompt='标注审核'
+                break;
+        }
+        console.log('this.stepPrompt',this.stepPrompt)
+    }
     /**
      * Sets a property for shape(s) according to the new value
      *
@@ -476,6 +493,16 @@ export default class RegionsInfo  {
         });
     }
 
+    increaseStep(){
+        this.isAdmin= Window.image_info_['isAdmin'];
+        this.curUserId= Window.image_info_['curUserId'];
+        let step=Window.image_info_['curStep'];
+        step++;
+        Window.image_info_['curStep']=step;
+        this.curStep= step;
+        this.setStepPrompt();
+    }
+
     /**
      * Uses given data to populate the regions map
      *
@@ -492,8 +519,11 @@ export default class RegionsInfo  {
         // console.info('regions_info.js->setData(),this.image_info',this.image_info);
         // console.info('regions_info.js->Window.image_info_',Window.image_info_);
 
-        let isAdmin= Window.image_info_['isAdmin'];
-        let curUserId= Window.image_info_['curUserId'];
+        this.isAdmin= Window.image_info_['isAdmin'];
+        this.curUserId= Window.image_info_['curUserId'];
+        this.curStep= Window.image_info_['curStep'];
+        this.setStepPrompt();
+        // console.info('regions_info.js->curStep',this.curStep);
 
         try {
             let count = 0;
@@ -502,12 +532,12 @@ export default class RegionsInfo  {
                 let roi = data[r];
                 let name = data[r]['Name'] || '';
                 // console.log('roi',roi);
-                if (isAdmin){
+                if (this.isAdmin){
 
                 }else{
                     //如果不是 admin ，只显示自己名下的 roi
                     let ownerId=roi['omero:details']['owner']["@id"]
-                    if (curUserId!=ownerId) continue;
+                    if (this.curUserId!=ownerId) continue;
                 }
                 //经测试在这里改了无效，在 utils/Regions.js 那里改
                 // let perms= roi['omero:details']['permissions']

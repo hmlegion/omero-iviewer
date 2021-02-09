@@ -42,7 +42,7 @@ import {
     REGIONS_MODIFY_SHAPES, REGIONS_PROPERTY_CHANGED, REGIONS_SET_PROPERTY,
     REGIONS_SHOW_COMMENTS, REGIONS_STORED_SHAPES, REGIONS_STORE_SHAPES,
     VIEWER_IMAGE_SETTINGS, VIEWER_PROJECTIONS_SYNC, VIEWER_SET_SYNC_GROUP,
-    ENABLE_SHAPE_POPUP,
+    ENABLE_SHAPE_POPUP,GOTO_NEXT_STEP,GOTO_NEXT_STEP_FINISH,
     EventSubscriber
 } from '../events/events';
 
@@ -134,6 +134,10 @@ export default class Ol3Viewer extends EventSubscriber {
             (params={}) => this.storeShapes(params)],
         [REGIONS_STORED_SHAPES,
             (params={}) => this.afterShapeStorage(params)],
+        [GOTO_NEXT_STEP,
+            (params={}) => this.gotoNextStep(params)],
+        [GOTO_NEXT_STEP_FINISH,
+            (params={}) => this.gotoNextStepFinish(params)],
         [REGIONS_MODIFY_SHAPES,
             (params={}) => this.modifyShapes(params)],
         [REGIONS_HISTORY_ENTRY,
@@ -1106,6 +1110,42 @@ export default class Ol3Viewer extends EventSubscriber {
         } else storeRois();
     }
 
+    gotoNextStep(params = {}) {
+        // we need a viewer instance at a minimun,
+        // also check if the event doesn't concern us
+        if (this.viewer === null ||
+            params.config_id !== this.image_config.id) return;
+
+        let doGotoNextStep = () => {
+            let requestMade =
+                this.viewer.gotoNextStep(params.omit_client_update);
+
+            if (requestMade) Ui.showModalMessage("正在跳转到下一步，请稍候 ...");
+            else if (params.omit_client_update)
+                this.context.publish(
+                    GOTO_NEXT_STEP_FINISH, { omit_client_update: true});
+        };
+
+        let curStep=this.image_config.regions_info.curStep
+        let confirmText="此操作将不能返回";
+        switch (curStep){
+            case 1:
+                confirmText="开始标注审核后，除了专家外，所有的医生都不再可以修改本图片的标注";
+                break;
+            case 2:
+                confirmText="结束审核后，所有的标注将不能修改";
+                break;
+        }
+        Ui.showConfirmationDialog(
+            '你确认要到下一步吗?',
+            confirmText,
+            doGotoNextStep, () => {
+                if (params.omit_client_update)
+                    this.context.publish(
+                        GOTO_NEXT_STEP, { omit_client_update: false});
+            });
+    }
+
     /**
      * Modifies shape definition
      *
@@ -1133,6 +1173,12 @@ export default class Ol3Viewer extends EventSubscriber {
             this.viewer,
             params.definition, params.shapes.slice(),
             typeof params.callback === 'function' ? params.callback : null);
+    }
+
+    gotoNextStepFinish(params = {}) {
+        Ui.hideModalMessage();
+
+        this.image_config.regions_info.increaseStep()
     }
 
     /**
