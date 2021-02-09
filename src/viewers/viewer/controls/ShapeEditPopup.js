@@ -73,6 +73,10 @@ class ShapeEditPopup extends Overlay {
             <div><input readonly class='shape-popup-coords'/></div>
             <div><input readonly class='shape-popup-area'/></div>
             <div><input readonly class='shape-popup-owner'/></div>
+            <div class='hr-popup-confirm'>
+                <hr/>
+                <button type="button" class='btn btn-primary shape-popup-confirm'>Confirm</button>
+            </div>
 <!--            enable/disable roi,不需要注释掉-->
 <!--            <a href="#" class="shape-edit-popup-closer" class="shape-edit-popup-closer"></a>-->
         </div>`;
@@ -95,12 +99,20 @@ class ShapeEditPopup extends Overlay {
         // Need to add to map before we can bindListeners() to DOM elements
         this.map.addOverlay(this);
 
+        let curStep=Window.image_info_['curStep'];
+        let isAdmin=Window.image_info_['isAdmin'];
+        if (isAdmin && curStep==2)
+            $('.hr-popup-confirm').css('display','block')
+        else
+            $('.hr-popup-confirm').css('display','none')
+
         // this.textInput = this.popup.querySelectorAll('.shape-popup-edit-text')[0];
         this.roiClass = this.popup.querySelectorAll('#roiClass')[0];
         this.coordsInput = this.popup.querySelectorAll('.shape-popup-coords')[0];
         this.areaInput = this.popup.querySelectorAll('.shape-popup-area')[0];
         // this.popupCloser = this.popup.querySelectorAll('.shape-edit-popup-closer')[0];
         this.popupOwner = this.popup.querySelectorAll('.shape-popup-owner')[0];
+        this.btnConfirm = this.popup.querySelectorAll('.shape-popup-confirm')[0];
         this.bindListeners();
     };
 
@@ -134,8 +146,13 @@ class ShapeEditPopup extends Overlay {
 
         // this.textInput.value = text;
         this.roiClass.value = text;
+        let perms=feature['permissions']
+        if (!!perms){
+            if (!perms['canEdit'])
+                this.roiClass.disabled='disabled'
+        }
         // console.log('feature',feature)
-        this.popupOwner.value='owner:' +feature['owner'];
+        this.popupOwner.value='Owner: ' +feature['owner'];
 
         // show if feature is visible
         if (this.regions.renderFeature(feature)) {
@@ -277,6 +294,18 @@ class ShapeEditPopup extends Overlay {
             }, 500);
         }
 
+        // this.btnConfirm.onclick = (event) => {
+        //         // Handled by Right panel UI, regions-edit.js
+        //         sendEventNotification(
+        //             this.viewer_,
+        //             "IMAGE_CONFIRM_CHANGE",
+        //             {
+        //                 shapeId: this.shapeId,
+        //                 Text: value,
+        //             }
+        //         );
+        // }
+
         // this.popupCloser.onclick = (event) => {
         //     this.setPosition(undefined);
         //     event.target.blur();
@@ -300,6 +329,7 @@ class ShapeEditPopup extends Overlay {
         // this.textInput.onkeyup = null;
         // this.popupCloser.onclick = null;
         this.roiClass.onchange=null;
+        this.btnConfirm.onclick=null;
     }
 
     /**

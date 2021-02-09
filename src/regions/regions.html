@@ -110,15 +110,16 @@
             </regions-drawing>
             <hr />
         </div>
-        <ul id="regions-tabs" class="nav nav-tabs small-tabs" role="tablist">
-            <li class="${selected_roi_tab === ROI_TABS.ROI_TABLE ? 'active' : ''}">
-                <a href="#${ ROI_TABS.ROI_TABLE }" role="tab">ROIs ${image_config && image_config.image_info ?
-                    '[' + image_config.image_info.roi_count + ']' : ''}</a>
-            </li>
-<!--            <li class="${selected_roi_tab === ROI_TABS.ROI_PLANE_GRID ? 'active' : ''}">-->
-<!--                <a href="#${ ROI_TABS.ROI_PLANE_GRID }" role="tab">Planes</a>-->
+<!--        <ul id="regions-tabs" class="nav nav-tabs small-tabs" role="tablist">-->
+<!--            <li class="${selected_roi_tab === ROI_TABS.ROI_TABLE ? 'active' : ''}">-->
+<!--&lt;!&ndash;                <a href="#${ ROI_TABS.ROI_TABLE }" role="tab">ROIs ${image_config && image_config.image_info ?&ndash;&gt;-->
+<!--&lt;!&ndash;                    '[' + image_config.image_info.roi_count + ']' : ''}</a>&ndash;&gt;-->
+<!--                <a href="#${ ROI_TABS.ROI_TABLE }" role="tab">ROIs</a>-->
 <!--            </li>-->
-        </ul>
+<!--&lt;!&ndash;            <li class="${selected_roi_tab === ROI_TABS.ROI_PLANE_GRID ? 'active' : ''}">&ndash;&gt;-->
+<!--&lt;!&ndash;                <a href="#${ ROI_TABS.ROI_PLANE_GRID }" role="tab">Planes</a>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--        </ul>-->
         <div id="regions-tabs-content" class="tab-content">
             <div id="roi-table"
                 class="tab-pane ${selected_roi_tab === ROI_TABS.ROI_TABLE ? 'active' : ''}">
