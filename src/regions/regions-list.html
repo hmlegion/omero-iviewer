@@ -153,7 +153,9 @@
                              ${shape.deleted ? 'color: red;' :
                                 (shape.modified ? 'color: blue;' : '')}
                              ${hasPermissions(shape) && shape.type !== 'mask' ?
-                                '' : 'opacity: 0.5'}"
+                                '' : 'opacity: 0.5'}
+                             ${shape.TheC !== -1 ? 'background-color: #99CC99;' : ''}
+                           "
                         click.delegate="selectShape(shape.shape_id, shape.selected, $event)">
                         <div class="regions-table-col roi-toggle"></div>
                         <div class="regions-table-col shape-show">

@@ -24,6 +24,7 @@ import Line from '../geom/Line';
 import {isArray,
         sendEventNotification} from '../utils/Misc';
 import Ui from '../../../utils/ui';
+import {IMAGE_COMMENT_CHANGE, IMAGE_CONFIRM_CHANGE} from "../../../events/events";
 
 /**
  * @classdesc
@@ -113,7 +114,7 @@ class ShapeEditPopup extends Overlay {
         // this.popupCloser = this.popup.querySelectorAll('.shape-edit-popup-closer')[0];
         this.popupOwner = this.popup.querySelectorAll('.shape-popup-owner')[0];
         this.btnConfirm = this.popup.querySelectorAll('.shape-popup-confirm')[0];
-        this.bindListeners();
+        this.bindListeners(this);
     };
 
     /**
@@ -250,7 +251,7 @@ class ShapeEditPopup extends Overlay {
     /**
      * Add Listeners for events.
      */
-    bindListeners() {
+    bindListeners(scope) {
         let inputTimeout;
         // this.textInput.onkeyup = (event) => {
         //
@@ -294,17 +295,19 @@ class ShapeEditPopup extends Overlay {
             }, 500);
         }
 
-        // this.btnConfirm.onclick = (event) => {
-        //         // Handled by Right panel UI, regions-edit.js
-        //         sendEventNotification(
-        //             this.viewer_,
-        //             "IMAGE_CONFIRM_CHANGE",
-        //             {
-        //                 shapeId: this.shapeId,
-        //                 Text: value,
-        //             }
-        //         );
-        // }
+        // let feature = this.regions.getFeatureById(this.shapeId)
+        this.btnConfirm.onclick = (event) => {
+            let feature = scope.regions.getFeatureById(this.shapeId);
+            feature['TheC']=1
+            // Handled by Right panel UI, regions-edit.js
+            sendEventNotification(
+                this.viewer_,
+                "IMAGE_CONFIRM_CHANGE",
+                {
+                    shapeId: this.shapeId
+                }
+            );
+        }
 
         // this.popupCloser.onclick = (event) => {
         //     this.setPosition(undefined);

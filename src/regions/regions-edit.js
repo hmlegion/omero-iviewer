@@ -27,7 +27,7 @@ import {
 } from '../utils/constants';
 import {
     IMAGE_DIMENSION_CHANGE, REGIONS_MODIFY_SHAPES, REGIONS_SET_PROPERTY,
-    IMAGE_COMMENT_CHANGE,
+    IMAGE_COMMENT_CHANGE,IMAGE_CONFIRM_CHANGE,
     EventSubscriber
 } from '../events/events';
 import {inject, customElement, bindable, BindingEngine} from 'aurelia-framework';
@@ -70,9 +70,11 @@ export default class RegionsEdit extends EventSubscriber {
      * @memberof RegionsEdit
      * @type {Array.<string,function>}
      */
-    sub_list = [[IMAGE_DIMENSION_CHANGE, () => this.adjustEditWidgets()],
-                [IMAGE_COMMENT_CHANGE,
-                    (params={}) => this.handleImageCommentChange(params)]];
+    sub_list = [
+        [IMAGE_DIMENSION_CHANGE, () => this.adjustEditWidgets()],
+        [IMAGE_COMMENT_CHANGE, (params={}) => this.handleImageCommentChange(params)],
+        [IMAGE_CONFIRM_CHANGE, (params={}) => this.handleConfirmChange(params)]
+    ];
 
     /**
      * @memberof RegionsEdit
@@ -308,6 +310,31 @@ export default class RegionsEdit extends EventSubscriber {
         if (shape) {
             this.onCommentChange(params.Text, shape);
         }
+    }
+
+    handleConfirmChange(params) {
+        if (!params.shapeId) return;
+        let shape = this.regions_info.getShape(params.shapeId);
+        if (shape) {
+            this.onConfirmChange(shape);
+        }
+    }
+
+    onConfirmChange(shape=null) {
+        if (typeof shape !== 'object' || shape === null) return;
+
+        let deltaProps = {type: shape.type};
+        let property = 'TheC';
+        let value=1;
+        //将字段 x1 的值改成1
+        deltaProps[property] = value;
+        // shape['TheC']=1; 改了无效?
+
+        this.modifyShapes(
+            deltaProps,
+            this.createUpdateHandler([property], [value]),
+            false,shape.oldId);
+
     }
 
     /**

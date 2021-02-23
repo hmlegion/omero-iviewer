@@ -11,3 +11,6 @@ omero_iviewer.egg-info
 libs
 .omero
 *.pyc
+.idea
+venv
+package-lock.json
